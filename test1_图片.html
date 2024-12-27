@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Coze 流式工作流示例</title>
+<script>
+// 这是一个测试页面，用于测试扣子流式工作流API，经测试，可以正常使用
+// 处理表单提交的函数
+async function handleFormSubmit(event) {
+  event.preventDefault();
+
+  const formData = new FormData(event.target);
+  const responseContainer = document.getElementById('responseContainer');
+  const submitBtn = event.submitter;
+  
+  // 显示加载状态
+  submitBtn.disabled = true;
+  submitBtn.textContent = '生成中...';
+  responseContainer.innerHTML = '<div class="loading">AI 正在生成内容...</div>';
+
+  let fullContent = '';
+  let buffer = '';
+
+  try {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer pat_taUrJDxRQyj5AX0mn7DCpkO3pG2GKamXbEgMUQDlT5xaIg9LVWT7S8ORTmB8Ivb1',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        workflow_id: '7452901536713850934',
+        parameters: {
+          user_q: formData.get('BOT_USER_INPUT')
+        }
+      })
+    };
+
+    console.log('开始����������用API...', requestOptions);
+
+    const response = await fetch('https://api.coze.cn/v1/workflow/stream_run', requestOptions);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    responseContainer.innerHTML = '';
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+
+    while (true) {
+      const {done, value} = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, {stream: true});
+      
+      let eventEnd = buffer.indexOf('\n\n');
+      while (eventEnd > -1) {
+        const eventData = buffer.substring(0, eventEnd);
+        buffer = buffer.substring(eventEnd + 2);
+
+        const eventLines = eventData.split('\n');
+        let event = '';
+        let data = '';
+
+        for (const line of eventLines) {
+          if (line.startsWith('event: ')) {
+            event = line.substring(7);
+          } else if (line.startsWith('data: ')) {
+            data = line.substring(6);
+          }
+        }
+
+        // 处理不同类型的事件
+        if (event === 'Message' && data) {
+          try {
+            const parsedData = JSON.parse(data);
+            console.log('Message事件:', parsedData);
+            if (parsedData.content) {
+              // 处理markdown格式的图片链接
+              const content = parsedData.content.replace(/!\[.*?\]\((.*?)\)/g, '<div class="image-wrapper" onclick="showImagePreview(\'$1\')"><img src="$1" class="thumbnail"></div>');
+              fullContent += content;
+              responseContainer.innerHTML = formatContent(fullContent);
+              responseContainer.scrollTop = responseContainer.scrollHeight;
+            }
+          } catch (e) {
+            console.error('解析消息失败:', e, data);
+          }
+        } else if (event === 'Error' && data) {
+          const parsedData = JSON.parse(data);
+          console.error('Error事件:', parsedData);
+          throw new Error(parsedData.error_message);
+        } else if (event === 'Done') {
+          console.log('生成完成');
+        }
+
+        eventEnd = buffer.indexOf('\n\n');
+      }
+    }
+
+  } catch (error) {
+    console.error('API 调用失败:', error);
+    responseContainer.innerHTML = `<div class="error">生成失败: ${error.message}</div>`;
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = '提交';
+  }
+}
+
+// 修改格式化内容的函数
+function formatContent(content) {
+  // 提取所有图片URL
+  const imageUrls = [];
+  const regex = /!\[.*?\]\((.*?)\)/g;
+  let match;
+  
+  // 提取所有图片URL
+  let textContent = content;
+  while ((match = regex.exec(content)) !== null) {
+    imageUrls.push(match[1]);
+    // 从文本内容中移除图片标记
+    textContent = textContent.replace(match[0], '');
+  }
+  
+  // 构建HTML
+  let html = '';
+  
+  // 添加文本内容（如果有）
+  if (textContent.trim()) {
+    html += `<div class="text-content">${textContent.trim()}</div>`;
+  }
+  
+  // 将所有图片放在一个水平容器中
+  if (imageUrls.length > 0) {
+    html += `
+      <div class="horizontal-images">
+        ${imageUrls.map(url => `
+          <div class="image-item">
+            <img src="${url}" onclick="showImagePreview('${url}')" alt="图片">
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+  
+  return html;
+}
+
+// 图片预览功能
+function showImagePreview(url) {
+  const overlay = document.createElement('div');
+  overlay.className = 'preview-overlay';
+  overlay.innerHTML = `<img src="${url}">`;
+  overlay.onclick = () => document.body.removeChild(overlay);
+  document.body.appendChild(overlay);
+}
+
+// 在页面加载完成后添加遮罩层样式
+document.addEventListener('DOMContentLoaded', function() {
+  // 确保遮罩层容器存在
+  if (!document.querySelector('.image-preview-overlay')) {
+    const overlay = document.createElement('div');
+    overlay.className = 'image-preview-overlay';
+    document.body.appendChild(overlay);
+  }
+});
+</script>
+<style>
+.error {
+  color: red;
+  padding: 10px;
+}
+.loading {
+  color: #666;
+  padding: 10px;
+}
+#responseContainer {
+  margin-top: 20px;
+  padding: 15px;
+  min-height: 100px;
+  overflow-x: auto;
+}
+form {
+  margin: 20px;
+}
+input[type="text"] {
+  width: 300px;
+  padding: 8px;
+  margin-right: 10px;
+}
+button {
+  padding: 8px 15px;
+}
+.image-wrapper {
+  flex: 0 0 auto;
+  width: 180px;
+  height: 180px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  background: #fff;
+}
+img.thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+img.thumbnail:hover {
+  transform: scale(1.05);
+}
+p {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 10px 0;
+  overflow-x: auto;
+}
+.image-preview-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  cursor: pointer;
+}
+.image-preview-overlay img {
+  max-width: 90%;
+  max-height: 90vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+}
+/* 文本内容样式 */
+.text-content {
+  margin-bottom: 20px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* 水平图片容器 */
+.horizontal-images {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  margin: 20px 0;
+  padding: 10px 0;
+  overflow-x: auto;
+  white-space: nowrap;
+  min-height: 200px;
+}
+
+/* 图片项容器 */
+.image-item {
+  flex: 0 0 200px;
+  width: 200px;
+  height: 200px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  display: inline-block;
+}
+
+/* 图片样式 */
+.image-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.image-item img:hover {
+  transform: scale(1.05);
+}
+
+/* 预览遮罩层 */
+.preview-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.preview-overlay img {
+  max-width: 90%;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+/* 响应容器样式 */
+#responseContainer {
+  margin: 20px;
+  padding: 15px;
+}
+
+/* 确保段落不会影响图片布局 */
+p {
+  margin: 0;
+  padding: 0;
+}
+</style>
+</head>
+<body>
+
+<form onsubmit="handleFormSubmit(event)">
+  <input type="text" name="BOT_USER_INPUT" placeholder="请输入内容" required>
+  <button type="submit">提交</button>
+</form>
+
+<div id="responseContainer"></div>
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+logo
+搭建指南
+开发指南
+扣子专业版
+搜索
+目录
+大纲
+API 和 SDK
+API 参考
+API 介绍
+更新日志
+准备工作
+鉴权
+接口
+API 概览
+空间
+智能体
+会话
+创建会话
+查看会话信息
+消息
+对话
+发起对话
+查看对话详情
+查看对话消息详情
+提交工具执行结果
+取消进行中的对话
+文件
+工作流
+知识库
+语音
+错误码
+历史版本接口
+最佳实践
+SDK 参考
+创建会话
+创建一个会话。​
+会话是智能体和用户之间的一段问答交互，一个会话包含一条或多条消息。会话、对话和消息的概念说明，可参考​基础概念。​
+基础信息​
+​
+请求方式​
+POST​
+请求地址​
+​
+ https://api.coze.cn/v1/conversation/create​
+​
+权限​
+createConversation​
+确保调用该接口使用的个人令牌开通了 createConversation 权限，详细信息参考​鉴权方式。​
+接口说明​
+调用接口创建一个会话。​
+​
+Header​
+​
+参数​
+取值​
+说明​
+Authorization​
+Bearer $Access_Token​
+用于验证客户端身份的访问令牌。你可以在扣子平台中生成访问令牌，详细信息，参考​准备工作。​
+Content-Type​
+application/json​
+解释请求正文的方式。​
+​
+​
+​
+Body​
+​
+参数​
+类型​
+是否必选​
+说明​
+messages​
+Array of Object​
+可选​
+会话中的消息内容。详细说明可参考 ​EnterMessage object。​
+meta_data​
+Map​
+可选​
+创建会话时的附加消息，查看会话时也会返回此附加消息。​
+自定义键值对，应指定为 Map 对象格式。长度为 16 对键值对，其中键（key）的长度范围为 1～64 个字符，值（value）的长度范围为 1～512 个字符。​
+​
+EnterMessage object​
+​
+参数​
+类型​
+是否必选​
+说明​
+role​
+String​
+必选​
+发送这条消息的实体。取值：​
+user：代表该条消息内容是用户发送的。​
+assistant：代表该条消息内容是 智能体发送的。​
+type​
+​
+String​
+可选​
+​
+消息类型。默认为 question。​
+question：用户输入内容。​
+answer：智能体返回给用户的消息内容，支持增量返回。如果工作流绑定了消息节点，可能会存在多 answer 场景，此时可以用流式返回的结束标志来判断所有 answer 完成。​
+function_call：智能体对话过程中调用函数（function call）的中间结果。 ​
+tool_output：调用工具 （function call）后返回的结果。​
+tool_response：调用工具 （function call）后返回的结果。​
+follow_up：如果在 智能体上配置打开了用户问题建议开关，则会返回推荐问题相关的回复内容。不支持在请求中作为入参。​
+verbose：多 answer 场景下，服务端会返回一个 verbose 包，对应的 content 为 JSON 格式，content.msg_type =generate_answer_finish 代表全部 answer 回复完成。不支持在请求中作为入参。​
+仅发起会话（v3）接口支持将此参数作为入参，且：​
+如果 autoSaveHistory=true，type 支持设置为 question 或 answer。​
+如果 autoSaveHistory=false，type 支持设置为 question、answer、function_call、tool_output/tool_response。​
+其中，type=question 只能和 role=user 对应，即仅用户角色可以且只能发起 question 类型的消息。详细说明可参考​消息 type 说明。​
+​
+content​
+String​
+可选​
+消息的内容，支持纯文本、多模态（文本、图片、文件混合输入）、卡片等多种类型的内容。​
+content_type 为 object_string 时，content 为 object_string object 数组序列化之后的 JSON String，详细说明可参考 object_string object。​
+当 content_type = text 时，content 为普通文本，例如 "content" :"Hello!"。​
+content_type​
+String​
+可选​
+消息内容的类型，支持设置为：​
+text：文本。​
+object_string：多模态内容，即文本和文件的组合、文本和图片的组合。​
+card：卡片。此枚举值仅在接口响应中出现，不支持作为入参。​
+content 不为空时，此参数为必选。​
+​
+ meta_data​
+Map ​
+可选​
+创建消息时的附加消息，获取消息时也会返回此附加消息。​
+自定义键值对，应指定为 Map 对象格式。长度为 16 对键值对，其中键（key）的长度范围为 1～64 个字符，值（value）的长度范围为 1～512 个字符。​
+​
+object_string object​
+​
+参数​
+类型​
+是否必选​
+说明​
+type​
+String​
+必选​
+多模态消息内容类型，支持设置为：​
+text：文本类型。​
+file：文件类型。​
+image：图片类型。​
+text​
+String​
+可选​
+文本内容。​
+file_id​
+String​
+可选​
+文件或图片内容的 ID。​
+必须是当前账号上传的文件 ID，上传方式可参考​上传文件。​
+在 type 为 file 或 image 时，file_id 和 file_url 应至少指定一个。​
+​
+file_url​
+String​
+可选​
+文件或图片内容的在线地址。必须是可公共访问的有效地址。​
+在 type 为 file 或 image 时，file_id 和 file_url 应至少指定一个。​
+​
+一个数组中只能有一个 Text 类型消息，但可以有多个 file、image 类型的消息。​
+object_string 中，text 需要与 file 或 image 一起使用。如果消息内容只有 text 类型，建议直接指定 content_type: text，不使用 object_string。​
+支持发送纯图片或纯文件消息，但此类消息前后应同时传入一条文本消息作为用户 Query。例如 "content": "[{\"type\":\"image\",\"file_id\":\"{{file_id_1}}\"}]" 为一条纯图片消息，且前后无文本消息，此时接口会报 4000 参数错误。​
+​
+例如，以下数组是一个完整的多模态内容：​
+序列化前：​
+​
+[​
+    {​
+        "type": "text",​
+        "text": "你好我有一个帽衫，我想问问它好看么，你帮我看看"​
+    }, {​
+        "type": "image",​
+        "file_id": "{{file_id_1}}"​
+    }, {​
+        "type": "file",​
+        "file_id": "{{file_id_2}}"​
+    },​
+        {​
+        "type": "file",​
+        "file_url": "{{file_url_1}}"​
+    }​
+]​
+​
+序列化后：​
+​
+"[{\"type\":\"text\",\"text\":\"你好我有一个帽衫，我想问问它好看么，你帮我看看\"},{\"type\":\"image\",\"file_id\":\"{{file_id_1}}\"},{\"type\":\"file\",\"file_id\":\"{{file_id_2}}\"},{\"type\":\"file\",\"file_url\":\"{{file_url_1}}\"}]"​
+​
+​
+​
+消息结构示例​
+文本消息的 content_type 为 text，消息结构示例如下。​
+​
+{​
+    "role": "user",​
+    "content": "搜几个最新的军事新闻",​
+    "content_type": "text"​
+}​
+​
+​
+​
+返回结果​
+​
+参数​
+类型​
+说明​
+code​
+Integer​
+状态码。​
+0 代表调用成功。​
+msg​
+String​
+状态信息。API 调用失败时可通过此字段查看详细错误信息。​
+data​
+Object​
+新会话的基础信息。详细说明可参考 ​Conversation Object 。​
+​
+Conversation Object ​
+​
+参数名称​
+参数类型​
+必须参数​
+备注​
+id​
+String​
+选填​
+Conversation ID，即会话的唯一标识。​
+created_at​
+Integer​
+选填​
+会话创建的时间。格式为 10 位的 Unixtime 时间戳，单位为秒。​
+meta_data​
+​
+Map​
+选填​
+创建会话时的附加消息，查看会话时也会返回此附加消息。​
+自定义键值对，应指定为 Map 对象格式。长度为 16 对键值对，其中键（key）的长度范围为 1～64 个字符，值（value）的长度范围为 1～512 个字符。​
+​
+​
+示例​
+请求示例​
+​
+curl --location --request POST 'https://api.coze.cn/v1/conversation/create' \​
+--header 'Authorization: Bearer pat_OYDacMzM3WyOWV3Dtj2bHRMymzxP****' \​
+--header 'Content-Type: application/json' \​
+​
+​
+返回示例​
+​
+{​
+    "code": 0,​
+    "data": {​
+        "created_at": 1718289297,​
+        "id": "737999610479815****",​
+        "meta_data": {​
+            "uuid": "newid1234"​
+        }​
+    },​
+    "msg": ""​
+}​
+​
+​
+上一篇
+下一篇
+
+基础信息
+Header
+Body
+EnterMessage object
+object_string object
+消息结构示例
+返回结果
+Conversation Object
+示例
+请求示例
+返回示例
