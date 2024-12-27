@@ -1,0 +1,42 @@
+.media-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 80px);
+    padding: 20px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.media-btn {
+    padding: 20px;
+    font-size: 18px;
+    background-color: #007AFF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.media-btn:hover {
+    background-color: #0056b3;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+    .button-container {
+        max-width: 250px;
+    }
+    
+    .media-btn {
+        padding: 15px;
+        font-size: 16px;
+    }
+} 

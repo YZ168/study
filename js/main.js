@@ -20,11 +20,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.href = 'essay.html';
             } else if (type === '知识问答游戏') {
                 window.location.href = 'marketing.html';
+            } else if (type === '单词闯关') {
+                window.location.href = 'media.html';
             }
         });
     });
 
-    // 添加功能导航区域的点击事件
+    // 添加功能导航区域��点击事件
     const featureItems = document.querySelectorAll('.feature-item');
     featureItems.forEach(item => {
         item.addEventListener('click', function() {
@@ -35,6 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.href = 'essay.html';
             } else if (text === '知识问答游戏') {
                 window.location.href = 'marketing.html';
+            } else if (text === '单词闯关') {
+                window.location.href = 'media.html';
             }
         });
     });
