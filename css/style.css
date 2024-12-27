@@ -50,6 +50,15 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 8px;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.feature-item:hover {
+    background-color: #f0f7ff;
+    transform: translateY(-2px);
 }
 
 .feature-icon {
@@ -61,12 +70,35 @@ body {
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
 .feature-icon img {
     width: 24px;
     height: 24px;
     object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.feature-item:hover .feature-icon {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: scale(1.1);
+}
+
+.feature-item:hover .feature-icon img {
+    transform: scale(1.1);
+}
+
+.feature-item span {
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.feature-item:hover span {
+    color: #1a73e8;
+    font-weight: 500;
 }
 
 /* AI工具箱 */
@@ -81,69 +113,56 @@ body {
 
 .tools-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
 }
 
 .tool-card {
-    background-color: #fff;
-    border-radius: 8px;
+    background: #fff;
+    border-radius: 12px;
     overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
     position: relative;
 }
 
 .tool-card img {
     width: 100%;
-    height: 120px;
+    height: 200px;
     object-fit: cover;
-    background-color: #f5f5f5;
-    transition: opacity 0.3s;
-    position: relative;
-    z-index: 2;
+    display: block;
+    transition: transform 0.3s ease;
 }
 
-/* 修改加载状态样式 */
-.tool-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
+/* 工具卡片悬停效果 */
+.tool-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.tool-card:hover img {
+    transform: scale(1.05);
+}
+
+/* 工具按钮样式 */
+.tool-btn {
+    padding: 12px;
     width: 100%;
-    height: 120px;
-    background-color: #f5f5f5;
-    z-index: 0;
-}
-
-.tool-card::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 30px;
-    height: 30px;
-    border: 2px solid #ddd;
-    border-top-color: #666;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+    border: none;
+    background: #f8f9fa;
+    color: #333;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: auto;
+    position: relative;
     z-index: 1;
 }
 
-@keyframes spin {
-    to { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-.tool-btn {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    background-color: #000;
-    color: #fff;
-    font-size: 14px;
-}
-
-/* 图片加载完成后隐藏加载状态 */
-.tool-card.loaded::before,
-.tool-card.loaded::after {
-    display: none;
+.tool-btn:hover {
+    background: #e9ecef;
 } 
