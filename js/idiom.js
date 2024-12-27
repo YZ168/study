@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const displayContent = document.getElementById('displayContent');
     const resultContainer = document.querySelector('.result-container');
     const submitBtn = document.querySelector('.submit-btn');
-    const quickBtns = document.querySelectorAll('.quick-btn');
+    const quickBtn = document.querySelector('.quick-btn');
 
     let currentConversationId = null; // 存储当前会话ID
     // 确保右侧展示区域始终显示，并显示初始状态
@@ -13,18 +13,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // 设置生成状态的函数
     function setGeneratingState(isGenerating) {
         submitBtn.disabled = isGenerating;
-        quickBtns.forEach(btn => {
-            btn.disabled = isGenerating;
-            if (isGenerating) {
-                btn.classList.add('disabled');
-            } else {
-                btn.classList.remove('disabled');
-            }
-        });
+        quickBtn.disabled = isGenerating;
         if (isGenerating) {
             submitBtn.textContent = '生成中...';
+            quickBtn.classList.add('disabled');
         } else {
             submitBtn.textContent = '开始生成';
+            quickBtn.classList.remove('disabled');
         }
     }
 
@@ -42,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                bot_id: '7441499021698891816',
+                bot_id: '7453115303963656242',
                 user_id: "test",
                 stream: true,
                 additional_messages: [
@@ -69,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const content = document.getElementById('content').value;
 
             if (!content) {
-                displayContent.innerHTML = '<div class="error">请��入内容</div>';
+                displayContent.innerHTML = '<div class="error">请输入内容</div>';
                 return;
             }
 

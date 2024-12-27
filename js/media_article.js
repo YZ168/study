@@ -3,11 +3,30 @@ document.addEventListener('DOMContentLoaded', function() {
     const displayContent = document.getElementById('displayContent');
     const resultContainer = document.querySelector('.result-container');
     const submitBtn = document.querySelector('.submit-btn');
+    const quickBtns = document.querySelectorAll('.quick-btn');
 
     let currentConversationId = null; // 存储当前会话ID
-        // 确保右侧展示区域始终显示，并显示初始状态
-        resultContainer.style.display = 'block';
-        displayContent.innerHTML = '<div class="empty-state">AI生成的内容将在这里显示</div>';
+    // 确保右侧展示区域始终显示，并显示初始状态
+    resultContainer.style.display = 'block';
+    displayContent.innerHTML = '<div class="empty-state">AI生成的内容将在这里显示</div>';
+
+    // 设置生成状态的函数
+    function setGeneratingState(isGenerating) {
+        submitBtn.disabled = isGenerating;
+        quickBtns.forEach(btn => {
+            btn.disabled = isGenerating;
+            if (isGenerating) {
+                btn.classList.add('disabled');
+            } else {
+                btn.classList.remove('disabled');
+            }
+        });
+        if (isGenerating) {
+            submitBtn.textContent = '生成中...';
+        } else {
+            submitBtn.textContent = '开始生成';
+        }
+    }
 
     // 发起对话的函数
     async function startChat(content) {
@@ -55,8 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // 显示加载状态
-            submitBtn.disabled = true;
-            submitBtn.textContent = '生成中...';
+            setGeneratingState(true);
             displayContent.innerHTML = '<div class="loading">AI 正在生成内容...</div>';
 
             // 如果没有会话ID，先创建会话
@@ -180,8 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
             displayContent.innerHTML = `<div class="error">生成失败: ${error.message}</div>`;
         } finally {
             // 恢复按钮状态
-            submitBtn.disabled = false;
-            submitBtn.textContent = '开始游戏';
+            setGeneratingState(false);
         }
     });
 

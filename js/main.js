@@ -25,6 +25,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 case '单词闯关':
                     window.location.href = 'media.html';
                     break;
+                case '成语卡片学习':
+                    window.location.href = 'idiom.html';
+                    break;
             }
         });
     });
@@ -42,6 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.href = 'marketing.html';
             } else if (text === '单词闯关') {
                 window.location.href = 'media.html';
+            } else if (text === '成语卡片学习') {
+                window.location.href = 'idiom.html';
             }
         });
     });

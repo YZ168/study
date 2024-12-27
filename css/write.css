@@ -358,4 +358,43 @@
 .quick-btn:active {
     background-color: #d0d0d0;
     transform: translateY(1px);
+}
+
+.feature-description {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.feature-description h3 {
+    color: #333;
+    font-size: 16px;
+    margin: 0 0 10px 0;
+    font-weight: 600;
+}
+
+.feature-description p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.quick-buttons.center {
+    justify-content: center;
+}
+
+.quick-btn.compact {
+    flex: 0 0 auto;
+    min-width: 120px;
+    padding: 8px 20px;
+}
+
+.quick-btn.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+    background-color: #f0f0f0;
 } 
