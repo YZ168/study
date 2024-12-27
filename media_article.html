@@ -25,9 +25,14 @@
                     <form id="writeForm" class="write-form">
                         <div class="form-group">
                             <label for="content">内容</label>
-                            <textarea id="content" name="content" rows="10" placeholder="请输入你想要训练的单词"></textarea>
+                            <textarea id="content" name="content" rows="10" placeholder="请输入开始单词训练">开始单词训练</textarea>
                         </div>
-                        <button type="submit" class="submit-btn">开始训练</button>
+                        <!-- 添加两个快捷按钮 -->
+                        <div class="quick-buttons">
+                            <button type="button" class="quick-btn" onclick="document.getElementById('content').value='开始训练'; document.getElementById('writeForm').dispatchEvent(new Event('submit'));">开始训练</button>
+                            <button type="button" class="quick-btn" onclick="document.getElementById('content').value='继续训练'; document.getElementById('writeForm').dispatchEvent(new Event('submit'));">继续训练</button>
+                        </div>
+                        <button type="submit" class="submit-btn">开始对话</button>
                     </form>
                 </div>
 

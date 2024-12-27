@@ -9,24 +9,27 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 工具卡片点击事件
-    const toolCards = document.querySelectorAll('.tool-card');
-    toolCards.forEach(card => {
-        card.addEventListener('click', function() {
-            // 获取卡片的类型并跳转
-            const type = this.querySelector('.tool-btn').textContent;
-            if (type === '古诗词情景再现') {
-                window.location.href = 'write.html';
-            } else if (type === '学习陪伴') {
-                window.location.href = 'essay.html';
-            } else if (type === '知识问答游戏') {
-                window.location.href = 'marketing.html';
-            } else if (type === '单词闯关') {
-                window.location.href = 'media.html';
+    document.querySelectorAll('.tool-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const buttonText = card.querySelector('.tool-btn').textContent;
+            switch (buttonText) {
+                case '古诗词情景再现':
+                    window.location.href = 'write.html';
+                    break;
+                case '知识问答游戏':
+                    window.location.href = 'marketing.html';
+                    break;
+                case '学习陪伴':
+                    window.location.href = 'essay.html';
+                    break;
+                case '单词闯关':
+                    window.location.href = 'media.html';
+                    break;
             }
         });
     });
 
-    // 添加功能导航区域��点击事件
+    // 添加功能导航区域点击事件
     const featureItems = document.querySelectorAll('.feature-item');
     featureItems.forEach(item => {
         item.addEventListener('click', function() {
