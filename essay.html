@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作文写作 - AI萌宠陪伴教育</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/write.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部导航栏 -->
+        <header class="header">
+            <div class="nav-header">
+                <a href="index.html" class="back-btn">返回</a>
+                <h1 class="page-title">学习陪伴</h1>
+            </div>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <main class="write-content">
+            <div class="write-layout">
+                <!-- 左侧输入区 -->
+                <div class="input-section">
+                    <form id="writeForm" class="write-form">
+                        <div class="form-group">
+                            <label for="content">内容</label>
+                            <textarea id="content" name="content" rows="10" placeholder="请输入你想要讨论的内容"></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">开始对话</button>
+                    </form>
+                </div>
+
+                <!-- 右侧展示区 -->
+                <div class="display-section">
+                    <div class="result-container">
+                        <div id="displayContent"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 图片查看弹窗 -->
+        <div id="imageModal" class="image-modal">
+            <span class="close-modal">&times;</span>
+            <img id="modalImage" class="modal-content" src="" alt="查看大图">
+        </div>
+    </div>
+    <script src="js/config.js"></script>
+    <script src="js/essay.js"></script>
+</body>
+</html> 

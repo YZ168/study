@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const type = this.querySelector('.tool-btn').textContent;
             if (type === '古诗词情景再现') {
                 window.location.href = 'write.html';
+            } else if (type === '学习陪伴') {
+                window.location.href = 'essay.html';
             } else if (type === '知识问答游戏') {
                 window.location.href = 'marketing.html';
             }
@@ -29,6 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const text = this.querySelector('span').textContent;
             if (text === '古诗词情景再现') {
                 window.location.href = 'write.html';
+            } else if (text === '学习陪伴') {
+                window.location.href = 'essay.html';
             } else if (text === '知识问答游戏') {
                 window.location.href = 'marketing.html';
             }
