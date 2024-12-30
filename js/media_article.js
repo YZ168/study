@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                bot_id: '7441499021698891816',
+                bot_id: '7454140989021323274',
                 user_id: "test",
                 stream: true,
                 additional_messages: [
