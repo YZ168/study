@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
             displayContent.innerHTML = `<div class="error">生成失败: ${error.message}</div>`;
         } finally {
             submitBtn.disabled = false;
-            submitBtn.textContent = '生成古诗词情景';
+            submitBtn.textContent = '开始对话';
         }
     });
 }); 

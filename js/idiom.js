@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.textContent = '生成中...';
             quickBtn.classList.add('disabled');
         } else {
-            submitBtn.textContent = '开始生成';
+            submitBtn.textContent = '开始对话';
             quickBtn.classList.remove('disabled');
         }
     }

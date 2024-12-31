@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } finally {
             // 恢复按钮状态
             submitBtn.disabled = false;
-            submitBtn.textContent = '开始游戏';
+            submitBtn.textContent = '开始对话';
         }
     });
 

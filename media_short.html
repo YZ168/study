@@ -22,6 +22,14 @@
             <div class="write-layout">
                 <!-- 左侧输入区 -->
                 <div class="input-section">
+                    <div class="feature-description">
+                        <h3>支持的功能：</h3>
+                        <p>按着训练关卡相同的组合音，进行单词训练，需要给出正确的单词和单词数量，赢取金币，完成闯关挑战。关卡由易到难。</p>
+                        <h3>游戏规则：</h3>
+                        <p>1. 每关不能少于 4 个正确的单词。2. 正确的单词越多得到的金币就越多！</p>
+                        <h3>使用说明：</h3>
+                        <p>首先，请在下方点击开始挑战按钮，待生成内容后，在输入框输入回答内容，点击开始对话，正确完成本次挑战后，点击继续挑战，继续下一关的挑战。</p>
+                    </div>
                     <form id="writeForm" class="write-form">
                         <div class="form-group">
                             <label for="content">内容</label>
@@ -29,8 +37,8 @@
                         </div>
                         <!-- 添加两个快捷按钮 -->
                         <div class="quick-buttons">
-                            <button type="button" class="quick-btn" onclick="document.getElementById('content').value='开始挑战'; document.getElementById('writeForm').dispatchEvent(new Event('submit'));">开始挑战</button>
-                            <button type="button" class="quick-btn" onclick="document.getElementById('content').value='继续挑战'; document.getElementById('writeForm').dispatchEvent(new Event('submit'));">继续挑战</button>
+                            <button type="button" class="quick-btn" onclick="document.getElementById('content').value='开始单词挑战'; document.getElementById('writeForm').dispatchEvent(new Event('submit'));">开始单词挑战</button>
+                            <button type="button" class="quick-btn" onclick="document.getElementById('content').value='继续单词挑战'; document.getElementById('writeForm').dispatchEvent(new Event('submit'));">继续单词挑战</button>
                         </div>
                         <button type="submit" class="submit-btn">开始对话</button>
                     </form>

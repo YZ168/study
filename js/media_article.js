@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isGenerating) {
             submitBtn.textContent = '生成中...';
         } else {
-            submitBtn.textContent = '开始生成';
+            submitBtn.textContent = '开始对话';
         }
     }
 

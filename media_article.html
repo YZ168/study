@@ -22,6 +22,12 @@
             <div class="write-layout">
                 <!-- 左侧输入区 -->
                 <div class="input-section">
+                    <div class="feature-description">
+                        <h3>支持的功能：</h3>
+                        <p>使用组合音、词根、词缀记忆法快速记忆关联单词。包含组合音发音与用法，相关单词的发音、词义、例句、单词解释。帮助学生快速记忆单词。</p>
+                        <h3>使用说明：</h3>
+                        <p>首先，请在下方点击开始训练按钮，待生成内容后，在输入框输入回答内容，点击开始对话，正确完成本次训练后，点击继续训练，继续下一关的训练。</p>
+                    </div>
                     <form id="writeForm" class="write-form">
                         <div class="form-group">
                             <label for="content">内容</label>
@@ -29,8 +35,8 @@
                         </div>
                         <!-- 添加两个快捷按钮 -->
                         <div class="quick-buttons">
-                            <button type="button" class="quick-btn" onclick="document.getElementById('content').value='开始训练'; document.getElementById('writeForm').dispatchEvent(new Event('submit'));">开始训练</button>
-                            <button type="button" class="quick-btn" onclick="document.getElementById('content').value='继续训练'; document.getElementById('writeForm').dispatchEvent(new Event('submit'));">继续训练</button>
+                            <button type="button" class="quick-btn" onclick="document.getElementById('content').value='开始单词训练'; document.getElementById('writeForm').dispatchEvent(new Event('submit'));">开始单词训练</button>
+                            <button type="button" class="quick-btn" onclick="document.getElementById('content').value='继续单词训练'; document.getElementById('writeForm').dispatchEvent(new Event('submit'));">继续单词训练</button>
                         </div>
                         <button type="submit" class="submit-btn">开始对话</button>
                     </form>
