@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>趣味学习基地</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/live2d.css">
     <!-- Live2D -->
     <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
     <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
@@ -93,7 +94,12 @@
     <script src="js/main.js"></script>
 
     <!-- Live2D Widget -->
+    <script src="https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/live2d.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/live2d.js"></script>
     <script>
+        console.log('Starting Live2D initialization...');
+        // Live2D configuration
         L2Dwidget.init({
             model: {
                 jsonPath: 'https://unpkg.com/live2d-widget-model-tororo@1.0.5/assets/tororo.model.json',
@@ -113,7 +119,12 @@
             react: {
                 opacityDefault: 0.8,
                 opacityOnHover: 1
-            }
+            },
+            debug: true // Enable debug mode
+        }).then(() => {
+            console.log('Live2D initialization completed successfully');
+        }).catch(err => {
+            console.error('Live2D initialization failed:', err);
         });
     </script>
 </body>

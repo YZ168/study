@@ -1,0 +1,594 @@
+.waifu {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 1000;
+    transform: translateY(-10px);
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.waifu-tips {
+    opacity: 0;
+    width: 240px;
+    min-height: 44px;
+    margin: 0;
+    padding: 12px 16px;
+    border: 1px solid rgba(224, 186, 140, 0.3);
+    border-radius: 16px;
+    background-color: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 4px 15px rgba(191, 158, 118, 0.15),
+                0 1px 3px rgba(191, 158, 118, 0.1);
+    font-size: 14px;
+    line-height: 1.6;
+    word-break: break-all;
+    text-overflow: ellipsis;
+    overflow: visible;
+    position: absolute;
+    bottom: 320px;
+    right: 20px;
+    transition: all 0.4s ease-in-out;
+    pointer-events: none;
+    z-index: 1001;
+}
+
+.waifu-tips::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: 85px;
+    border-style: solid;
+    border-width: 10px 10px 0;
+    border-color: rgba(224, 186, 140, 0.3) transparent transparent transparent;
+}
+
+.waifu-tips::after {
+    content: '';
+    position: absolute;
+    bottom: -9px;
+    right: 85px;
+    border-style: solid;
+    border-width: 10px 10px 0;
+    border-color: rgba(255, 255, 255, 0.98) transparent transparent transparent;
+}
+
+.waifu-tips.active {
+    opacity: 1;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+/* 加载动画样式 */
+.loading-dots::after {
+    content: '';
+    animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+    0% { content: ''; }
+    25% { content: '.'; }
+    50% { content: '..'; }
+    75% { content: '...'; }
+    100% { content: ''; }
+}
+
+.waifu-chat-input {
+    display: none;
+    position: absolute;
+    bottom: 40px;
+    right: 10px;
+    width: 200px;
+    height: 34px;
+    border: 1px solid rgba(204, 204, 204, 0.8);
+    border-radius: 17px;
+    padding: 0 15px;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.95);
+    transition: all 0.3s ease;
+    pointer-events: auto;
+    z-index: 1002;
+}
+
+.waifu-chat-input:focus {
+    outline: none;
+    border-color: rgba(102, 175, 233, 0.8);
+    box-shadow: 0 0 8px rgba(102, 175, 233, 0.3);
+}
+
+.waifu-chat-input.active {
+    display: block;
+}
+
+#live2d {
+    position: relative;
+    width: 180px;
+    height: 360px;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.waifu-history-btn {
+    position: fixed;
+    right: 210px;
+    bottom: 30px;
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(224, 186, 140, 0.3);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(191, 158, 118, 0.2);
+    transition: all 0.3s ease;
+    z-index: 999;
+    font-size: 18px;
+}
+
+.waifu-history-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(191, 158, 118, 0.3);
+    border-color: rgba(224, 186, 140, 0.5);
+}
+
+.waifu-history-panel {
+    position: fixed;
+    right: 240px;
+    bottom: 80px;
+    width: 280px;
+    height: 400px;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid rgba(224, 186, 140, 0.3);
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(191, 158, 118, 0.15),
+                0 1px 3px rgba(191, 158, 118, 0.1);
+    transition: all 0.3s ease;
+    z-index: 998;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+.waifu-history-panel.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.waifu-history-header {
+    padding: 12px 16px;
+    background: rgba(248, 249, 250, 0.95);
+    border-bottom: 1px solid rgba(224, 186, 140, 0.2);
+    border-radius: 16px 16px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.waifu-history-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #666;
+}
+
+.waifu-history-close {
+    cursor: pointer;
+    padding: 4px 8px;
+    color: #999;
+    transition: color 0.2s ease;
+}
+
+.waifu-history-close:hover {
+    color: #666;
+}
+
+.waifu-history-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    padding-bottom: 60px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(191, 158, 118, 0.3) transparent;
+}
+
+.waifu-history-item {
+    margin-bottom: 16px;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: slideIn 0.3s ease forwards;
+}
+
+.waifu-history-item.user {
+    text-align: right;
+}
+
+.waifu-history-message {
+    display: inline-block;
+    max-width: 85%;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.waifu-history-item.user .waifu-history-message {
+    background: rgba(224, 186, 140, 0.15);
+    color: #666;
+    border-radius: 14px 14px 2px 14px;
+    margin-left: auto;
+}
+
+.waifu-history-item.ai .waifu-history-message {
+    background: rgba(248, 249, 250, 0.95);
+    color: #333;
+    border-radius: 14px 14px 14px 2px;
+    border: 1px solid rgba(224, 186, 140, 0.2);
+}
+
+.waifu-history-time {
+    font-size: 12px;
+    color: #999;
+    margin: 4px 0;
+    opacity: 0.8;
+}
+
+@keyframes slideIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 自定义滚动条样式 */
+.waifu-history-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.waifu-history-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.waifu-history-content::-webkit-scrollbar-thumb {
+    background: rgba(191, 158, 118, 0.3);
+    border-radius: 2px;
+}
+
+.waifu-history-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(191, 158, 118, 0.5);
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+    .waifu {
+        transform: scale(0.7) translateY(-30px);
+        right: -30px;
+    }
+
+    .waifu-tips {
+        width: 200px;
+        min-height: 40px;
+        padding: 10px 14px;
+        font-size: 13px;
+        bottom: 280px;
+        right: 40px;
+    }
+
+    .waifu-chat-input {
+        width: 160px;
+        height: 32px;
+        font-size: 13px;
+        bottom: 35px;
+        right: 40px;
+    }
+
+    .waifu-history-btn {
+        right: 150px;
+        bottom: 25px;
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+    }
+
+    .waifu-history-panel {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        width: calc(100vw - 40px);
+        max-width: 320px;
+        height: 60vh;
+        bottom: 120px;
+    }
+
+    .waifu-history-panel.active {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    .waifu-history-btn {
+        right: auto;
+        left: 20px;
+        bottom: 25px;
+    }
+
+    .waifu-history-header {
+        padding: 10px 14px;
+    }
+
+    .waifu-history-content {
+        padding: 12px;
+    }
+
+    .waifu-history-message {
+        padding: 8px 12px;
+        font-size: 13px;
+        max-width: 90%;
+    }
+
+    .waifu-history-time {
+        font-size: 11px;
+        margin: 3px 0;
+    }
+}
+
+/* 超小屏幕设备适配 */
+@media screen and (max-width: 320px) {
+    .waifu {
+        transform: scale(0.6) translateY(-40px);
+        right: -40px;
+    }
+
+    .waifu-tips {
+        width: 180px;
+        right: 45px;
+        bottom: 260px;
+    }
+
+    .waifu-chat-input {
+        width: 140px;
+        right: 45px;
+    }
+
+    .waifu-history-btn {
+        right: 130px;
+        width: 30px;
+        height: 30px;
+        font-size: 15px;
+    }
+
+    .waifu-history-panel {
+        width: calc(100vw - 20px);
+        bottom: 100px;
+    }
+}
+
+/* 横屏模式适配 */
+@media screen and (max-width: 768px) and (orientation: landscape) {
+    .waifu {
+        transform: scale(0.6) translateY(-40px);
+    }
+
+    .waifu-history-panel {
+        height: 80vh;
+        bottom: 60px;
+    }
+
+    .waifu-tips {
+        bottom: 240px;
+    }
+}
+
+/* 确保点击区域在小屏幕上更容易点击 */
+@media (hover: none) and (pointer: coarse) {
+    .waifu-history-btn,
+    .waifu-history-close,
+    .waifu-chat-input {
+        min-height: 44px;
+    }
+
+    .waifu-history-close {
+        padding: 10px 15px;
+    }
+}
+
+.waifu-history-title-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.waifu-history-clear {
+    cursor: pointer;
+    padding: 4px 8px;
+    color: #999;
+    font-size: 13px;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    border-radius: 12px;
+}
+
+.waifu-history-clear:hover {
+    color: #ff6b6b;
+    background: rgba(255, 107, 107, 0.1);
+    border-color: rgba(255, 107, 107, 0.2);
+}
+
+/* 确认弹框样式 */
+.waifu-confirm-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    width: 280px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1010;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.waifu-confirm-dialog.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.waifu-confirm-content {
+    padding: 20px;
+    text-align: center;
+    color: #333;
+    font-size: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.waifu-confirm-buttons {
+    display: flex;
+    justify-content: space-around;
+    padding: 12px;
+}
+
+.waifu-confirm-btn {
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+}
+
+.waifu-confirm-cancel {
+    color: #666;
+    background: #f8f9fa;
+}
+
+.waifu-confirm-cancel:hover {
+    background: #eee;
+}
+
+.waifu-confirm-ok {
+    color: white;
+    background: #ff6b6b;
+}
+
+.waifu-confirm-ok:hover {
+    background: #ff5252;
+}
+
+.waifu-confirm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1009;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.waifu-confirm-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+    .waifu-confirm-dialog {
+        width: calc(100% - 40px);
+        max-width: 280px;
+    }
+    
+    .waifu-confirm-content {
+        padding: 16px;
+        font-size: 14px;
+    }
+    
+    .waifu-confirm-btn {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+}
+
+.waifu-history-input-area {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px;
+    border-top: 1px solid rgba(224, 186, 140, 0.2);
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 0 0 16px 16px;
+    display: flex;
+    gap: 8px;
+}
+
+.waifu-history-input {
+    flex: 1;
+    height: 36px;
+    border: 1px solid rgba(204, 204, 204, 0.8);
+    border-radius: 18px;
+    padding: 0 15px;
+    font-size: 14px;
+    background: rgba(255, 255, 255, 0.95);
+    transition: all 0.3s ease;
+}
+
+.waifu-history-input:focus {
+    outline: none;
+    border-color: rgba(102, 175, 233, 0.8);
+    box-shadow: 0 0 8px rgba(102, 175, 233, 0.3);
+}
+
+.waifu-history-send {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(224, 186, 140, 0.2);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.waifu-history-send:hover {
+    background: rgba(224, 186, 140, 0.3);
+}
+
+.waifu-history-send:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 768px) {
+    .waifu-history-input-area {
+        padding: 8px;
+    }
+    
+    .waifu-history-input {
+        height: 32px;
+        font-size: 13px;
+    }
+    
+    .waifu-history-send {
+        width: 32px;
+        height: 32px;
+    }
+} 
